@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List Sederhana</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f6f1;
+      color: #333;
+      padding: 20px;
+    }
+    h2 {
+      color: #4b3b2b;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 8px 0;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+      accent-color: #c9a227; /* warna emas */
+    }
+    .done {
+      text-decoration: line-through;
+      color: #888;
+    }
+    #resetBtn {
+      margin-top: 15px;
+      padding: 8px 12px;
+      background: #4b3b2b;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #resetBtn:hover {
+      background: #3a2e22;
+    }
+  </style>
+</head>
+<body>
+  <h2>To-Do List Harian</h2>
+  <ul id="todoList">
+    <li><input type="checkbox"> <span>Sholat Tepat Waktu</span></li>
+    <li><input type="checkbox"> <span>Makan Tepat Waktu</span></li>
+    <li><input type="checkbox"> <span>Istirahat yang cukup</span></li>
+    <li><input type="checkbox"> <span>Belajar yang fokus</span></li>
+  </ul>
+
+  <button id="resetBtn">Reset Checklist</button>
+
+  <script>
+    const list = document.getElementById("todoList");
+    const resetBtn = document.getElementById("resetBtn");
+
+    list.addEventListener("change", function(e) {
+      if (e.target.tagName === "INPUT" && e.target.type === "checkbox") {
+        const span = e.target.nextElementSibling;
+        if (e.target.checked) {
+          span.classList.add("done");
+        } else {
+          span.classList.remove("done");
+        }
+      }
+    });
+
+    resetBtn.addEventListener("click", function() {
+      const checkboxes = list.querySelectorAll("input[type='checkbox']");
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.nextElementSibling.classList.remove("done");
+      });
+    });
+  </script>
+</body>
+</html>
