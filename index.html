@@ -6,63 +6,106 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f6f1;
-      color: #333;
+      background-image: url('bg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      min-height: 100vh;
+      background-color: #000;
+      color: #000000;
       padding: 20px;
     }
+
     h2 {
-      color: #4b3b2b;
+      color: #335d80;
     }
+
     ul {
       list-style: none;
       padding: 0;
     }
+
     li {
       margin: 8px 0;
       padding: 8px;
-      background: #fff;
-      border: 1px solid #ddd;
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 6px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(6px);
     }
+
     input[type="checkbox"] {
       margin-right: 10px;
-      accent-color: #c9a227; /* warna emas */
+      accent-color: #c9a227;
     }
+
     .done {
       text-decoration: line-through;
       color: #888;
     }
-    #resetBtn {
+
+    #resetBtn, #addBtn {
       margin-top: 15px;
       padding: 8px 12px;
-      background: #4b3b2b;
+      background: #335d80;
       color: #fff;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
-    #resetBtn:hover {
+
+    #resetBtn:hover, #addBtn:hover {
       background: #3a2e22;
+    }
+
+    #newTask {
+      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(6px);
+      color: #000;
+      margin-top: 10px;
+    }
+
+    .deleteBtn {
+      margin-left: 10px;
+      padding: 4px 8px;
+      background: #c0392b;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .deleteBtn:hover {
+      background: #962d22;
     }
   </style>
 </head>
-<body>
-  <h2>To-Do List Harian</h2>
+<body background="bg.jpg">
+  <center><h2>To-Do List Tiara</h2></center>
   <ul id="todoList">
-    <li><input type="checkbox"> <span>Sholat Tepat Waktu</span></li>
-    <li><input type="checkbox"> <span>Makan Tepat Waktu</span></li>
-    <li><input type="checkbox"> <span>Istirahat yang cukup</span></li>
-    <li><input type="checkbox"> <span>Belajar yang fokus</span></li>
-    <li><input type="checkbox"> <span>Ekskul yang rajin</span></li>
+    <li><input type="checkbox"> <span>Sholat</span> <button class="deleteBtn">Hapus</button></li>
+    <li><input type="checkbox"> <span>Makan</span> <button class="deleteBtn">Hapus</button></li>
+    <li><input type="checkbox"> <span>Istirahat</span> <button class="deleteBtn">Hapus</button></li>
+    <li><input type="checkbox"> <span>Belajar</span> <button class="deleteBtn">Hapus</button></li>
+    <li><input type="checkbox"> <span>Ekskul</span> <button class="deleteBtn">Hapus</button></li>
   </ul>
-
+  <center>
+  <input type="text" id="newTask" placeholder="Tambah tugas...">
+  <button id="addBtn">Tambah</button>
   <button id="resetBtn">Reset Checklist</button>
+  </center>
 
   <script>
     const list = document.getElementById("todoList");
     const resetBtn = document.getElementById("resetBtn");
+    const addBtn = document.getElementById("addBtn");
+    const newTask = document.getElementById("newTask");
 
     list.addEventListener("change", function(e) {
       if (e.target.tagName === "INPUT" && e.target.type === "checkbox") {
@@ -75,12 +118,47 @@
       }
     });
 
+    list.addEventListener("click", function(e) {
+      if (e.target.classList.contains("deleteBtn")) {
+        e.target.parentElement.remove();
+      }
+    });
+
     resetBtn.addEventListener("click", function() {
       const checkboxes = list.querySelectorAll("input[type='checkbox']");
       checkboxes.forEach(cb => {
         cb.checked = false;
         cb.nextElementSibling.classList.remove("done");
       });
+    });
+
+    addBtn.addEventListener("click", function() {
+      const taskText = newTask.value.trim();
+
+      if (taskText.length < 3) {
+        alert("Tugas terlalu pendek! Minimal 3 huruf.");
+        return;
+      }
+      if (taskText.length > 10) {
+        alert("Tugas terlalu panjang! Maksimal 10 huruf.");
+        return;
+      }
+
+      const li = document.createElement("li");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      const span = document.createElement("span");
+      span.textContent = taskText;
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Hapus";
+      deleteBtn.className = "deleteBtn";
+
+      li.appendChild(checkbox);
+      li.appendChild(span);
+      li.appendChild(deleteBtn);
+      list.appendChild(li);
+
+      newTask.value = "";
     });
   </script>
 </body>
